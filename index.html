@@ -58,7 +58,7 @@
     <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
     <p class="lead">
       <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" id="qrButton">Click QR</a>
-      <div id="qrPlace">
+      <div class="mt-auto" id="qrPlace">
 
       </div>
     </p>
@@ -68,10 +68,29 @@
     <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
   </footer>
 </div>
-
+<!-- Template -->
+<!-- form template -->
+<form class="d-none" id="formTemplate">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 <script>
+  var curConId; //현재 연결 시도중인 connection_id
   $("#qrButton").click(function(){
+    $("#qrPlace").empty();
     $.ajax({url:"http://localhost:8021/connections/create-invitation",
     type:'POST', 
     data: {},
@@ -83,12 +102,21 @@
       console.log(inv_url);
       alert(inv_url.invitation_url);
       jQuery('#qrPlace').qrcode({
-        width:500,
-        height:500,
+        width:300,
+        height:300,
         text:inv_url.invitation_url
       });
+      addForm();
+      curConId = inv_url.connection_id;
+      console.log(curConId);
     }});
   });
+
+  function addForm(val){
+    jQuery(function($){
+      $("#qrPlace").append($("#formTemplate").html());
+    });
+  }
 
 </script>
 

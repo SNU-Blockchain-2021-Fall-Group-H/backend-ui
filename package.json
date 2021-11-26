@@ -1,0 +1,24 @@
+{
+  "name": "backend-ui",
+  "version": "1.0.0",
+  "description": "DID backend",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SNU-Blockchain-2021-Fall-Group-H/backend-ui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SNU-Blockchain-2021-Fall-Group-H/backend-ui/issues"
+  },
+  "homepage": "https://github.com/SNU-Blockchain-2021-Fall-Group-H/backend-ui#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "lite-server": "^2.6.1"
+  }
+}

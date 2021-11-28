@@ -58,6 +58,8 @@
     <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
     <p class="lead">
       <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" id="qrButton">Click QR</a>
+      <br><br>  
+      <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" id="getActiveCon">Get active connection</a>
       <div class="mt-auto" id="qrPlace">
 
       </div>
@@ -84,11 +86,12 @@
     <input type="checkbox" class="form-check-input" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Issue Stamp</button>
 </form>
 
 <script>
   var curConId; //현재 연결 시도중인 connection_id
+  var connectedCon; //연결된 connection
   $("#qrButton").click(function(){
     $("#qrPlace").empty();
     $.ajax({url:"http://localhost:8021/connections/create-invitation",
@@ -110,6 +113,28 @@
       curConId = inv_url.connection_id;
       console.log(curConId);
     }});
+  });
+
+  $("#getActiveCon").click(function(){
+    $.ajax({
+      url:"http://localhost:8021/connections",
+      type:'GET',
+      data:{},
+      success:function(result){
+        str =JSON.stringify(result);
+        var connections = jQuery.parseJSON(str).results;
+        $.each(connections, function(key,value){
+          if (value.state == "active"){
+            connectedCon = value;
+            alert(value.state);
+            return false;
+          }
+        });
+        console.log(connectedCon);
+        
+      }
+
+    })
   });
 
   function addForm(val){

@@ -44,7 +44,7 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <header class="mb-auto">
     <div>
-      <h3 class="float-md-start mb-0">Cover</h3>
+      <h3 class="float-md-start mb-0">스탬프카드</h3>
       <nav class="nav nav-masthead justify-content-center float-md-end">
         <a class="nav-link active" aria-current="page" href="#">Home</a>
         <!-- <a class="nav-link" href="#">Features</a>
@@ -54,8 +54,8 @@
   </header>
 
   <main class="px-3">
-    <h1>Cover your page.</h1>
-    <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+    <h1>스탬프 보상 발급</h1>
+    <p class="lead">발급발급발급 부트스트랩이랑 뭐 이용해서 발급한다</p>
     <p class="lead">
       <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" id="qrButton">Click QR</a>
       <br><br>  
@@ -75,23 +75,65 @@
 <form class="d-none" id="formTemplate">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" disabled readonly>
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
   </div>
+  <div class="row g-2 mb-3">
+    <label for="exampleInputPassword1" class="form-label">쿠폰 발급 또는 보상 사용</label>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInputGrid" placeholder="1" value="1" name="stamp">
+        <label for="floatingInputGrid" class="form-text">스탬프 발급</label>
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInputGrid" placeholder="0" value="0" name="stamp">
+        <label for="floatingInputGrid" class="form-text">보상 사용</label>
+      </div>
+    </div>
+  </div>
+  <div class="row g-2 mb-3">
+    <label for="exampleInputPassword1" class="form-label">발급자 수신자 정보</label>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInputGrid" 
+        placeholder="Faber cafe" value="Faber cafe" name="issuer">
+        <label for="floatingInputGrid" class="form-text">발급자</label>
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInputGrid" 
+        placeholder="Alice" value="Alice" name="receiver">
+        <label for="floatingInputGrid" class="form-text">수신자</label>
+      </div>
+    </div>
+  </div>
   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="exampleInputEmail1" class="form-label">발급날짜</label>
+    <input type="date" class="form-control" id="todays-date" name="todays-date" 
+    aria-describedby="emailHelp" >
   </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Issue Stamp</button>
   </div>
-  <button type="submit" class="btn btn-primary">Issue Stamp</button>
 </form>
 
 <script>
   var curConId; //현재 연결 시도중인 connection_id
   var connectedCon; //연결된 connection
+  var today = new Date();
+  var dd = ("0" + (today.getDate())).slice(-2);
+  var mm = ("0" + (today.getMonth() +　1)).slice(-2);
+  var yyyy = today.getFullYear();
+  today = yyyy + '-' + mm + '-' + dd ;
+  $("#todays-date").attr("value", today);
+
+
+
+  
   $("#qrButton").click(function(){
     $("#qrPlace").empty();
     $.ajax({url:"http://localhost:8021/connections/create-invitation",
@@ -102,8 +144,7 @@
     {
       str = JSON.stringify(result);
       var inv_url = jQuery.parseJSON(str);
-      console.log(inv_url);
-      alert(inv_url.invitation_url);
+      console.log(inv_url.invitation_url);
       jQuery('#qrPlace').qrcode({
         width:300,
         height:300,
@@ -131,7 +172,7 @@
           }
         });
         console.log(connectedCon);
-        
+        $("#exampleInputEmail1").val(connectedCon.connection_id);
       }
 
     })

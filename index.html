@@ -73,11 +73,24 @@
 <!-- Template -->
 <!-- form template -->
 <form class="d-none" id="formTemplate">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" disabled readonly>
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  <div class="row g-2 mb-3">
+    <label for="exampleInputPassword1" class="form-label">유저 연결정보</label>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="exampleInputEmail1" name="connection_id" disabled readonly>
+        <label for="floatingInputGrid" class="form-text">연결 id</label>
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="cred_def_id"  name="stamp" disabled readonly>
+        <label for="floatingInputGrid" class="form-text">쿠폰 정보</label>
+      </div>
+    </div>
+    <div id="emailHelp" class="form-text">연결정보를 표시합니다. 수동으로 입력은 불가능합니다.</div>
+
   </div>
+  
   <div class="row g-2 mb-3">
     <label for="exampleInputPassword1" class="form-label">쿠폰 발급 또는 보상 사용</label>
     <div class="col-md">
@@ -111,7 +124,7 @@
     </div>
   </div>
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">발급날짜</label>
+    <label for="credIssuedDate" class="form-label">발급날짜</label>
     <input type="date" class="form-control" id="todays-date" name="todays-date" 
     aria-describedby="emailHelp" >
   </div>
@@ -130,6 +143,8 @@
   var yyyy = today.getFullYear();
   today = yyyy + '-' + mm + '-' + dd ;
   $("#todays-date").attr("value", today);
+
+  var credDefId; //credential Definition Id
 
 
 
@@ -175,7 +190,19 @@
         $("#exampleInputEmail1").val(connectedCon.connection_id);
       }
 
-    })
+    });
+
+    $.ajax({
+      url:"http://localhost:8021/credential-definitions/created",
+      type:'GET',
+      data:{},
+      success:function(result){
+        str =JSON.stringify(result);
+        credDefId = jQuery.parseJSON(str).credential_definition_ids
+        console.log("credDefId: " + credDefId);
+        $("#cred_def_id").val(credDefId); //cred def 빈칸에 채움
+      }
+    });
   });
 
   function addForm(val){

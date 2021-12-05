@@ -78,7 +78,7 @@
       <label for="exampleInputPassword1" class="form-label">유저 연결정보</label>
       <div class="col-md">
         <div class="form-floating">
-          <input type="text" class="form-control" id="exampleInputEmail1" name="connection_id" disabled readonly>
+          <input type="text" class="form-control" id="connection_id" name="connection_id" disabled readonly>
           <label for="floatingInputGrid" class="form-text">연결 id</label>
         </div>
       </div>
@@ -206,7 +206,7 @@
           }
         });
         console.log(connectedCon);
-        $("#exampleInputEmail1").val(connectedCon.connection_id);
+        $("#connection_id").val(connectedCon.connection_id);
       }
 
     });
@@ -271,24 +271,49 @@
       }
   ];
     var formData = {
-      "connection_id" : curConId,
-      "cred_def_id" : credDefId,
+      "connection_id" : $("#connection_id").val().toString(),
+      "cred_def_id" : credDefId[0].toString(),
       "comment" : "Offer stamp or reward to " + $("#name").val(),
       "auto_remove" : false,
       "credential_preview":{
         "@type" : "https://didcomm.org/issue-credential/2.0/credential-preview",
         "attributes":
           attributes
-        
-
       },
       "trace": false
     };
 
 
     console.log("formData: "+JSON.stringify(formData));
-    // console.log("timestamp: " + timeStamp);
-    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8021/issue-credential/send-offer",
+      data: JSON.stringify(formData),
+      contentType: "application/json; charset=utf-8",
+      dataType : 'json',
+      success : function(result){
+        console.log("Credential issue result: " + JSON.stringify(result));
+        if (result != null){
+          alert("Credentail Offer sent")
+        }
+
+      }
+    });
+    // $.ajax({
+    //   type: "POST",
+    //   url: "http://localhost:8021/issue-credential/send-offer",
+    //   data: formData,
+    //   contentType: "application/json; charset=utf-8",
+    //   dataType : 'json',
+    //   success : function(result){
+    //     console.log("Credential issue result: " + JSON.stringify(result));
+    //     if (result != null){
+    //       alert("Credentail Offer sent")
+    //     }
+
+    //   }
+    // });
+    // event.preventDefault();
 
   });
 

@@ -55,7 +55,7 @@
 
   <main class="px-3">
     <h1>스탬프 보상 발급</h1>
-    <p class="lead">발급발급발급 부트스트랩이랑 뭐 이용해서 발급한다</p>
+    <p class="lead">스탬프카드 쿠폰 및 보상을 발급합니다</p>
     <p class="lead">
       <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" id="qrButton">Click QR</a>
       <br><br>  
@@ -198,10 +198,13 @@
       success:function(result){
         str =JSON.stringify(result);
         var connections = jQuery.parseJSON(str).results;
+        var counter = 0;
         $.each(connections, function(key,value){
           if (value.state == "active"){
             connectedCon = value;
             alert(value.state);
+          
+
             return false;
           }
         });
@@ -290,6 +293,7 @@
       url: "http://localhost:8021/issue-credential/send-offer",
       data: JSON.stringify(formData),
       contentType: "application/json; charset=utf-8",
+      async : false,
       dataType : 'json',
       success : function(result){
         console.log("Credential issue result: " + JSON.stringify(result));
